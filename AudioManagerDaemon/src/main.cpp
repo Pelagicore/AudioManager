@@ -347,7 +347,7 @@ void mainProgram()
 #endif /*WITH_DATABASE_STORAGE*/
     IAmDatabaseHandler *pDatabaseHandler = dynamic_cast<IAmDatabaseHandler*>( &iDatabaseHandler );
 
-    CAmRoutingSender iRoutingSender(listRoutingPluginDirs);
+    CAmRoutingSender iRoutingSender(listRoutingPluginDirs, iSocketHandler);
     CAmCommandSender iCommandSender(listCommandPluginDirs);
     CAmControlSender iControlSender(controllerPlugin,&iSocketHandler);
     CAmRouter iRouter(pDatabaseHandler, &iControlSender);

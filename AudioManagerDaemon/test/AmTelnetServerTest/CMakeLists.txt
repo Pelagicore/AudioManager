@@ -31,6 +31,8 @@ set(INCLUDE_FOLDER ${CMAKE_SOURCE_DIR}/../../include)
 
 FIND_PACKAGE(PkgConfig)
 
+FIND_PACKAGE(Common)
+
 IF(WITH_DLT)    
     pkg_check_modules(DLT REQUIRED automotive-dlt>=2.2.0)   
 ENDIF(WITH_DLT)
@@ -77,7 +79,7 @@ ADD_EXECUTABLE(AmTelnetServerTest ${TELNET_SRCS_CXX})
 
 TARGET_LINK_LIBRARIES(AmTelnetServerTest 
     ${SQLITE_LIBRARIES}
-    ${DLT_LIBRARIES}
+    ${COMMON_LIBRARIES}
     ${DBUS_LIBRARY}    
     ${CMAKE_THREAD_LIBS_INIT}
     ${CMAKE_DL_LIBS}

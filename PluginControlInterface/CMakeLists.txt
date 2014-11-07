@@ -34,6 +34,8 @@ MESSAGE(STATUS "Building against control interface version ${LIB_INTERFACE_VERSI
 
 FIND_PACKAGE(NSM REQUIRED)
 
+FIND_PACKAGE(Common REQUIRED)
+
 INCLUDE_DIRECTORIES(
 	${CMAKE_SOURCE_DIR} 
 	${STD_INCLUDE_DIRS}
@@ -51,7 +53,7 @@ add_library(PluginControlInterface MODULE ${PLUGIN_CONTROL_SRCS_CXX})
 
 
 TARGET_LINK_LIBRARIES(PluginControlInterface 
-    ${DLT_LIBRARIES})
+    ${COMMON_LIBRARIES})
 
 IF(WITH_TESTS)
 	add_subdirectory (test)

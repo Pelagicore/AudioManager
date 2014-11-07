@@ -40,7 +40,7 @@ class CAmRoutingReceiver;
 class CAmRoutingSender
 {
 public:
-    CAmRoutingSender(const std::vector<std::string>& listOfPluginDirectories);
+    CAmRoutingSender(const std::vector<std::string>& listOfPluginDirectories, CAmSocketHandler& socketHandler);
     ~CAmRoutingSender();
 
     am_Error_e removeHandle(const am_Handle_s& handle);

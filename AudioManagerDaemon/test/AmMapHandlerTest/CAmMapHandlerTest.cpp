@@ -45,7 +45,7 @@ CAmMapHandlerTest::CAmMapHandlerTest() :
         plistCommandPluginDirs(), //
         pSocketHandler(),//
         pDatabaseHandler(), //
-        pRoutingSender(plistRoutingPluginDirs), //
+        pRoutingSender(plistRoutingPluginDirs, pSocketHandler), //
         pCommandSender(plistCommandPluginDirs), //
         pMockInterface(), //
         pRoutingInterfaceBackdoor(), //
@@ -2628,7 +2628,7 @@ CAmMapHandlerObserverCallbacksTest::CAmMapHandlerObserverCallbacksTest() :
                 plistRoutingPluginDirs(),
                 plistCommandPluginDirs(),
 				pSocketHandler(),
-				pRoutingSender(plistRoutingPluginDirs),
+				pRoutingSender(plistRoutingPluginDirs, pSocketHandler),
 				pCommandSender(plistCommandPluginDirs),
 				pControlSender(),
 				mMockObserver(&pCommandSender, &pRoutingSender, &pSocketHandler),

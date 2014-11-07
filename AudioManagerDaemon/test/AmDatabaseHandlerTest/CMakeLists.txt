@@ -26,6 +26,8 @@ FIND_PACKAGE(PkgConfig)
 IF(WITH_DATABASE_STORAGE)
 	pkg_check_modules(SQLITE REQUIRED sqlite3)
 
+FIND_PACKAGE(Common)
+
 IF(WITH_DLT)    
     pkg_check_modules(DLT REQUIRED automotive-dlt>=2.2.0)   
 ENDIF(WITH_DLT)
@@ -71,7 +73,7 @@ ADD_EXECUTABLE( AmDatabaseHandlerTest ${DATABASE_SRCS_CXX})
 
 TARGET_LINK_LIBRARIES( AmDatabaseHandlerTest 
 	${SQLITE_LIBRARIES}
-	${DLT_LIBRARIES}
+	${COMMON_LIBRARIES}
 	${DBUS_LIBRARY}
 	${CMAKE_THREAD_LIBS_INIT}
 	${CMAKE_DL_LIBS}

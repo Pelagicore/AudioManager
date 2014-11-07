@@ -31,6 +31,7 @@ IF(WITH_DATABASE_STORAGE)
 	pkg_check_modules(SQLITE REQUIRED sqlite3)
 ENDIF(WITH_DATABASE_STORAGE)
 
+FIND_PACKAGE(Common)
 
 IF(WITH_DLT)    
     pkg_check_modules(DLT REQUIRED automotive-dlt>=2.2.0)   
@@ -74,7 +75,7 @@ ADD_EXECUTABLE(AmNodeStateCommunicatorDBusTest ${NODESTATECOMMUNICATOR})
 
 TARGET_LINK_LIBRARIES(AmNodeStateCommunicatorDBusTest 
     ${SQLITE_LIBRARIES}
-    ${DLT_LIBRARIES}
+    ${COMMON_LIBRARIES}
     ${DBUS_LIBRARY}
     ${CMAKE_DL_LIBS}
     ${CMAKE_THREAD_LIBS_INIT}

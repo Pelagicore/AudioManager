@@ -143,15 +143,21 @@ bool CAmCommonAPIWrapper::commonDispatchCallback(const sh_pollHandle_t handle, v
     if (!mSourcesToDispatch.empty())
         return (true);
 
+    // Remind the fact that we have already dispatched the data to ensure that we will only trigger a dispatch when some new data is available on the socket
+    mWatchToCheck = NULL;
+
     return false;
 }
 
 bool CAmCommonAPIWrapper::commonCheckCallback(const sh_pollHandle_t, void *)
 {
+	if (mWatchToCheck==nullptr)
+		return false;
+
     std::vector<DispatchSource*> vecDispatch=mWatchToCheck->getDependentDispatchSources();
     mSourcesToDispatch.insert(mSourcesToDispatch.end(), vecDispatch.begin(), vecDispatch.end());
 
-    return (mWatchToCheck || !mSourcesToDispatch.empty());
+    return (!mSourcesToDispatch.empty());
 }
 
 void CAmCommonAPIWrapper::commonFireCallback(const pollfd pollfd, const sh_pollHandle_t, void *)
@@ -224,12 +230,12 @@ void CAmCommonAPIWrapper::registerTimeout(Timeout* timeout, const DispatchPriori
     pollTimeout.tv_nsec = (localTimeout % 1000) * 1000000;
 
     //prepare handle and callback. new is eval, but there is no other choice because we need the pointer!
-    sh_timerHandle_t handle;
-    timerHandles myHandle({handle,timeout});
-    mpListTimerhandles.push_back(myHandle);
+    mpListTimerhandles.resize(mpListTimerhandles.size() + 1);
+    timerHandles& myHandle = mpListTimerhandles.back();
+    myHandle.timeout = timeout;
 
     //add the timer to the pollLoop
-    mpSocketHandler->addTimer(pollTimeout, &pCommonTimerCallback, handle, timeout);
+    mpSocketHandler->addTimer(pollTimeout, &pCommonTimerCallback, myHandle.handle, timeout);
 
     return;
 }
@@ -245,6 +251,7 @@ void CAmCommonAPIWrapper::deregisterTimeout(Timeout* timeout)
         }
     }
 }
+
 
 void CAmCommonAPIWrapper::registerWatch(Watch* watch, const DispatchPriority)
 {

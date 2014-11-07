@@ -43,7 +43,8 @@ CAmControlSender::CAmControlSender(std::string controlPluginFile,CAmSocketHandle
         mPipe(), //
         mlibHandle(NULL), //
         mController(NULL), //
-        mSignal(0)
+        mSignal(0),
+        mDataReceived(false)
 {
     assert(sockethandler);
     std::ifstream isfile(controlPluginFile.c_str());
@@ -55,10 +56,10 @@ CAmControlSender::CAmControlSender(std::string controlPluginFile,CAmSocketHandle
     else if (!controlPluginFile.empty())
     {
         mInstance=this;
-        IAmControlSend* (*createFunc)();
-        createFunc = getCreateFunction<IAmControlSend*()>(controlPluginFile, mlibHandle);
+        IAmControlSend* (*createFunc)(CAmSocketHandler& sockethandler);
+        createFunc = getCreateFunction<IAmControlSend*(CAmSocketHandler& sockethandler)>(controlPluginFile, mlibHandle);
         assert(createFunc!=NULL);
-        mController = createFunc();
+        mController = createFunc(*sockethandler);
 
         //check libversion
         std::string version;
@@ -480,13 +481,15 @@ void CAmControlSender::receiverCallback(const pollfd pollfd, const sh_pollHandle
    (void) userData;
    //get the signal number from the socket
    read(pollfd.fd, &mSignal, sizeof(mSignal));
+   mDataReceived = true;
 }
 
 bool CAmControlSender::checkerCallback(const sh_pollHandle_t handle, void* userData)
 {
    (void) handle;
    (void) userData;
-   return (true);
+   // we do not return true if we don't have any data to process
+   return mDataReceived;
 }
 
 void CAmControlSender::hookSystemSessionStateChanged(const std::string& sessionName, const NsmSeat_e seatID, const NsmSessionState_e sessionStateID)
@@ -511,7 +514,8 @@ CAmControlSender::CAmControlSender() :
     mPipe(), //
     mlibHandle(NULL), //
     mController(NULL), //
-    mSignal(0)
+    mSignal(0),
+    mDataReceived(false)
 {
     logInfo("CAmControlSender was loaded in test mode!");
 }

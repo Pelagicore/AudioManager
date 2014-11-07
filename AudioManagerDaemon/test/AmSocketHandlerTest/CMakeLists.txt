@@ -31,6 +31,8 @@ set(INCLUDE_FOLDER ${CMAKE_SOURCE_DIR}/../../include)
 
 FIND_PACKAGE(PkgConfig)
 
+FIND_PACKAGE(Common)
+
 IF(WITH_DLT)    
     pkg_check_modules(DLT REQUIRED automotive-dlt>=2.2.0)   
 ENDIF(WITH_DLT)
@@ -58,8 +60,8 @@ file(GLOB Socket_SRCS_CXX
 ADD_EXECUTABLE(AmSocketHandlerTest ${Socket_SRCS_CXX})
 
 TARGET_LINK_LIBRARIES(AmSocketHandlerTest 
-    ${DLT_LIBRARIES}
     ${DBUS_LIBRARY}
+    ${COMMON_LIBRARIES}
     ${CMAKE_THREAD_LIBS_INIT}
     gtest
     gmock

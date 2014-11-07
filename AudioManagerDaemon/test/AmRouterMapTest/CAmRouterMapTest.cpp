@@ -33,7 +33,7 @@ CAmRouterMapTest::CAmRouterMapTest() :
         pControlSender(), //
 		pDatabaseHandler(),
         pRouter(&pDatabaseHandler, &pControlSender), //
-        pRoutingSender(plistRoutingPluginDirs), //
+        pRoutingSender(plistRoutingPluginDirs, pSocketHandler), //
         pCommandSender(plistCommandPluginDirs), //
         pMockInterface(), //
         pMockControlInterface(), //

@@ -149,6 +149,7 @@ private:
     IAmControlSend* mController; //!< pointer to the ControlSend interface
     static CAmControlSender* mInstance;
     int16_t mSignal;
+    bool mDataReceived;
 };
 
 }

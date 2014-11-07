@@ -36,7 +36,7 @@ CAmControlInterfaceTest::CAmControlInterfaceTest() :
         plistCommandPluginDirs(), //
         plistRoutingPluginDirs(), //
         pDatabaseHandler(), //
-        pRoutingSender(plistRoutingPluginDirs), //RoutingReceiver
+        pRoutingSender(plistRoutingPluginDirs, pSocketHandler), //RoutingReceiver
         pCommandSender(plistCommandPluginDirs), //
         pMockControlInterface(), //
         pMockRoutingInterface(), //

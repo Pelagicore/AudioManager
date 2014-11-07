@@ -34,6 +34,8 @@ MESSAGE(STATUS "Building against routing interface version ${LIB_INTERFACE_VERSI
 find_package( Threads )
 FIND_PACKAGE(DBUS REQUIRED)
 
+find_package( Common REQUIRED )
+
 INCLUDE_DIRECTORIES(
 	${CMAKE_SOURCE_DIR} 
  	${CMAKE_CURRENT_BINARY_DIR}
@@ -51,7 +53,7 @@ file(GLOB PLUGINDBUS_SRCS_CXX "src/*.cpp")
 add_library(PluginRoutingInterfaceAsync MODULE ${PLUGINDBUS_SRCS_CXX})
 
 TARGET_LINK_LIBRARIES(PluginRoutingInterfaceAsync
-    ${DLT_LIBRARIES}
+    ${COMMON_LIBRARIES}
     ${DBUS_LIBRARIES}
     ${CMAKE_THREAD_LIBS_INIT}
 )

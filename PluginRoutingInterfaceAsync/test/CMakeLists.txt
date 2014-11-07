@@ -25,6 +25,8 @@ FIND_PACKAGE(Threads)
 FIND_PACKAGE(PkgConfig)
 FIND_PACKAGE(DBUS REQUIRED)
 
+FIND_PACKAGE(Common)
+
 
 IF(WITH_DLT)
     pkg_check_modules(DLT REQUIRED automotive-dlt)
@@ -69,6 +71,7 @@ TARGET_LINK_LIBRARIES(AmRoutingReceiveAsyncTest
     ${CMAKE_DL_LIBS}
     ${CMAKE_THREAD_LIBS_INIT}
     ${DBUS_LIBRARIES}
+    ${COMMON_LIBRARIES}
     ${SQLITE_LIBRARIES}
     rt
     gtest
@@ -76,12 +79,6 @@ TARGET_LINK_LIBRARIES(AmRoutingReceiveAsyncTest
 )
 
 ADD_DEPENDENCIES(AmRoutingReceiveAsyncTest gtest gmock)
-
-IF(WITH_DLT)
-    TARGET_LINK_LIBRARIES(AmRoutingReceiveAsyncTest
-        ${DLT_LIBRARIES} 
-    )
-ENDIF(WITH_DLT) 
 
 INSTALL(TARGETS AmRoutingReceiveAsyncTest 
         DESTINATION "~/AudioManagerTest/"

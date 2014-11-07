@@ -39,7 +39,7 @@ namespace am
 #define REQUIRED_INTERFACE_VERSION_MAJOR 1  //!< major interface version. All versions smaller than this will be rejected
 #define REQUIRED_INTERFACE_VERSION_MINOR 0 //!< minor interface version. All versions smaller than this will be rejected
 
-CAmRoutingSender::CAmRoutingSender(const std::vector<std::string>& listOfPluginDirectories) :
+CAmRoutingSender::CAmRoutingSender(const std::vector<std::string>& listOfPluginDirectories, CAmSocketHandler& socketHandler) :
         mHandleCount(0), //
         mlistActiveHandles(), //
         mListInterfaces(), //
@@ -114,9 +114,9 @@ CAmRoutingSender::CAmRoutingSender(const std::vector<std::string>& listOfPluginD
     {
         logInfo("RoutingSender::RoutingSender try loading: ", *iter);
 
-        IAmRoutingSend* (*createFunc)();
+        IAmRoutingSend* (*createFunc)(CAmSocketHandler& socketHandler);
         void* tempLibHandle = NULL;
-        createFunc = getCreateFunction<IAmRoutingSend*()>(*iter, tempLibHandle);
+        createFunc = getCreateFunction<IAmRoutingSend*(CAmSocketHandler& socketHandler)>(*iter, tempLibHandle);
 
         if (!createFunc)
         {
@@ -124,7 +124,7 @@ CAmRoutingSender::CAmRoutingSender(const std::vector<std::string>& listOfPluginD
             continue;
         }
 
-        IAmRoutingSend* router = createFunc();
+        IAmRoutingSend* router = createFunc(socketHandler);
 
         if (!router)
         {
